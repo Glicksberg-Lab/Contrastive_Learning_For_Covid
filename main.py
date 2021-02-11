@@ -12,8 +12,8 @@ from MLP import MLP_model
 from kg_constraction_whole_new import Kg_construct_ehr
 
 
-if __name__ == "__main__":
-    kg = Kg_construct_ehr()
+def main(argv):
+    kg = Kg_construct_ehr(argv)
     dhgm = dynamic_hgm(kg, process_data, 4)
 
     print("now training 24h RETAIN with CL mortality")
@@ -37,3 +37,8 @@ if __name__ == "__main__":
     np.save("logit_24h_retain_cl_mortality.npy", dhgm.test_logit)
 
     dhgm.sess.close()
+
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])

@@ -1,23 +1,30 @@
 Contrastive Learning For Covid:
 
-Data Input requires:
-1.Lab test: 
-mxn numpy array, m:dimension for all available lab test data
+This Project Implement Contrastive Learning for clinical outcome prediction of Covid patient
 
-2.Registrition information:
-mxn numpy array
-rows:dimension for all registry data.
+System Requirement:
+Tensorflow 1.15.0
+
+To run the script:
+python3 main.py arg1 arg2 arg3
+
+Input data:
+
+arg1:Registrition information:
+numpy array
 columns:
-
-3.Vital sign:
-mxn numpy array
-
-4.Covid patient:
-mxn numpy array, if patient has multiple visit, pick the last visit data
-
-columns(from 0 to the end):
 [0]:patient mrn id
-[1]:patient admit time
-[2]:
+[1]:admit time:
+must be in the form of "year-day-hour".
+For example: "2020-06-03"
+[2]:In ICU time, put nan if no ICU transfer
+[3]:Intubation time
+[4]:death time
+[5]:covid observation time
+[6]:visit ID
 
+arg1:Lab test:
+numpy array
 
+arg3:Vital sign:
+numpy array
