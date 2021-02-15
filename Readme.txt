@@ -15,7 +15,7 @@ numpy array
 columns:
 [0]:patient mrn id
 [1]:admit time:
-must be in the form of: "2020=05-20 14:52:00"
+must be in the form of: "2020-05-20 14:52:00"
 [2]:In ICU time, put nan if no ICU transfer
 [3]:Intubation time
 [4]:death time

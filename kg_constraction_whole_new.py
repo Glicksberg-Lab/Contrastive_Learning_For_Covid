@@ -301,3 +301,71 @@ class Kg_construct_ehr():
                         self.dic_patient[i]['prior_time_vital'][self.prior_time].setdefault(obv_id, []).append(
                             value)
                     self.dic_vital[obv_id].setdefault('value', []).append(value)
+
+    def gen_demo_csv(self, name_to_store):
+        pick_num = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 19,
+                    20, 22, 23, 24, 26, 27, 28, 29, 30, 31, 32, 33, 36, 37, 38, 41, 43,
+                    45, 46, 47, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 64, 66,
+                    67, 69, 70, 72, 73, 74, 75, 76, 78, 79, 80, 83]
+        pick_num = np.array(pick_num)
+        self.feature_mean = []
+        feature = list(np.array(list(self.dic_vital.keys()) + list(self.dic_lab.keys()))[pick_num])
+        self.feature_copy = []
+        self.feature_iqr = []
+        feature_csv = feature #+ feature + feature + feature
+        for i in feature:
+            if i in self.dic_vital.keys():
+                #self.feature_mean.append(self.dic_vital[i]['mean_value'])
+                #mean = self.dic_vital[i]['mean_value']
+                self.feature_copy.append(i)
+                #std = np.float(self.dic_vital[i]['std'])
+                values = [np.float(i) for i in self.dic_vital[i]['value'] if np.float(i)<mean+std]
+                percent_75 = np.percentile(values,75)
+                values_correction = [i for i in values if i < percent_75]
+                mean_value = np.mean(values_correction)
+                self.feature_mean.append(mean_value)
+                irq_value = iqr(values_correction)
+                self.feature_iqr.append(irq_value)
+            if i in self.dic_lab.keys():
+                #self.feature_mean.append(self.dic_lab[i]['mean_value'])
+                #mean = self.dic_lab[i]['mean_value']
+                self.feature_copy.append(i)
+                #std = np.float(self.dic_labl[i]['std'])
+                values = [np.float(i) for i in self.dic_lab[i]['lab_value_patient'] if np.float(i)<mean+std]
+                percent_75 = np.percentile(values, 75)
+                values_correction = [i for i in values if i < percent_75]
+                mean_value = np.mean(values_correction)
+                self.feature_mean.append(mean_value)
+                irq_value = iqr(values_correction)
+                self.feature_iqr.append(irq_value)
+
+        #time_seq = list(np.ones(63)) + list(2 * np.ones(63)) + list(3 * np.ones(63)) + list(4 * np.ones(63))
+        #time_step1 = self.ave_data_scores_total[0, :][pick_num]
+        #time_step2 = self.ave_data_scores_total[1, :][pick_num]
+        #time_step3 = self.ave_data_scores_total[2, :][pick_num]
+        #time_step4 = self.ave_data_scores_total[3, :][pick_num]
+        #variable_scores = list(time_step1) + list(time_step2) + list(time_step3) + list(time_step4)
+        df = pd.DataFrame(
+            {"Demographic Features": self.feature_copy, "mean_value": self.feature_mean,"irq":self.feature_iqr})
+        df.to_csv(name_to_store, index=False)
+
+    def gen_race_csv(self,name_to_store):
+        self.dic_race_sec = {}
+        self.dic_gen_sec = {}
+        self.age_list = []
+        for i in self.total_data_mortality:
+            race = self.dic_demographic[i]['race']
+            gender = self.dic_demographic[i]['gender']
+            if race not in self.dic_race_sec.keys():
+                self.dic_race_sec[race] = {}
+                self.dic_race_sec[race] = 1
+            else:
+                self.dic_race_sec[race] += 1
+
+            if gender not in self.dic_gen_sec.keys():
+                self.dic_gen_sec[gender] = {}
+                self.dic_gen_sec[gender] = 1
+            else:
+                self.dic_gen_sec[gender] += 1
+            age = self.dic_demographic[i]['Age']
+            self.age_list.append(age)

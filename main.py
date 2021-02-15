@@ -14,6 +14,7 @@ from kg_constraction_whole_new import Kg_construct_ehr
 
 def main(argv):
     kg = Kg_construct_ehr(argv)
+    process_data.separate_train_test()
     dhgm = dynamic_hgm(kg, process_data, 4)
 
     print("now training 24h RETAIN with CL mortality")
