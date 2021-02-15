@@ -19,7 +19,7 @@ must be in the form of: "2020=05-20 14:52:00"
 [2]:In ICU time, put nan if no ICU transfer
 [3]:Intubation time
 [4]:death time
-[5]:covid observation time
+[5]:covid flag: put "1" if observed, "nan" if not.
 
 arg1:Lab test:
 numpy array
@@ -38,5 +38,8 @@ columns:
 [2]:vital sign result value
 [3]:vital sign result time:
 In the form of:"20200520180800"
+The vital sign includes:
+blood pressure:systolic; blood pressure:diastolic; temperature; pulse oximetry: respirations; pulse;
+height; weight/scale
 
 
